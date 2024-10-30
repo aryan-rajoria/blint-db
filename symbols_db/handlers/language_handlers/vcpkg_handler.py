@@ -1,21 +1,22 @@
 import os
 import subprocess
 
-from symbols_db import VCPKG_LOCATION
+from symbols_db import VCPKG_LOCATION, VCPKG_URL, VCPKG_HASH
 from symbols_db.handlers.language_handlers import BaseHandler
 from symbols_db.projects_compiler.vcpkg import (exec_explorer,
                                                 git_checkout_vcpkg_commit,
                                                 git_clone_vcpkg,
                                                 run_vcpkg_install_command)
 from symbols_db.utils.utils import subprocess_run_debug
+from symbols_db.handlers.git_handler import git_checkout_commit, git_clone
 
 
 class VcpkgHandler(BaseHandler):
     strip = False
 
     def __init__(self):
-        git_clone_vcpkg()
-        git_checkout_vcpkg_commit()
+        git_clone(VCPKG_URL, VCPKG_LOCATION)
+        git_checkout_commit(VCPKG_LOCATION, VCPKG_HASH)
         run_vcpkg_install_command()
 
     def build(self, project_name):
@@ -69,6 +70,7 @@ def archive_explorer(directory):
                 result = subprocess.run(["file", file_path], capture_output=True)
                 if b"archive" in result.stdout:
                     executables.append(file_path)
+            # FileNotFoundError may be correct as `file` command executable is a file
             except FileNotFoundError:
                 print(
                     "Error: 'file' command not found. Make sure it's installed and in your PATH."

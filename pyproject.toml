@@ -8,12 +8,14 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 blint = "^2.2.3"
-isort = "^5.13.2"
-black = "^24.10.0"
-flake8 = "^7.1.1"
 
 [tool.poetry.scripts]
 symbols-db = 'symbols_db.cli:main'
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.10.0"
+flake8 = "^7.1.1"
 
 [build-system]
 requires = ["poetry-core"]

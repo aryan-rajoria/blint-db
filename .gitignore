@@ -6,6 +6,9 @@ blint_working.db
 bom-syn.json
 all_ifunc_object.json
 
+# pycharm
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

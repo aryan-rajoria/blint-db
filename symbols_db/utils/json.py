@@ -1,7 +1,5 @@
 import json
 
-from symbols_db import logger
-
 
 def get_key_in_json_list(key_search, key_name, property_list):
     return_key = None
@@ -24,7 +22,6 @@ def property_exists_get_property(component, property_name):
 
 
 def get_properties_internal(property_name, file_name):
-    blint_sbom = None
     with open(file_name, "r") as f:
         blint_sbom = json.load(f)
 

@@ -1,21 +1,20 @@
 import os
 import subprocess
+import shutil
 from pathlib import Path
 
-from symbols_db import CWD, WRAPDB_LOCATION
+from symbols_db import CWD, WRAPDB_URL, WRAPDB_LOCATION, WRAPDB_HASH
 from symbols_db.handlers.language_handlers import BaseHandler
-from symbols_db.projects_compiler.meson import (ensure_meson_installed,
-                                                git_checkout_wrapdb_commit,
-                                                git_clone_wrapdb)
+from symbols_db.handlers.git_handler import git_clone, git_checkout_commit
 from symbols_db.utils.utils import subprocess_run_debug
 
 
 class MesonHandler(BaseHandler):
 
     def __init__(self):
-        if ensure_meson_installed():
-            git_clone_wrapdb()
-            git_checkout_wrapdb_commit()
+        if shutil.which("meson"):
+            git_clone(WRAPDB_URL, WRAPDB_LOCATION)
+            git_checkout_commit(WRAPDB_LOCATION, WRAPDB_HASH)
         else:
             ModuleNotFoundError("Meson was not found")
 

@@ -1,6 +1,7 @@
 import os
 import subprocess
 import traceback
+from sqlite3 import OperationalError
 
 from symbols_db import (DEBUG_MODE, VCPKG_HASH, VCPKG_LOCATION, VCPKG_URL,
                         logger)
@@ -28,13 +29,13 @@ def run_vcpkg_install_command():
     )
     if DEBUG_MODE:
         print(install_run.stdout)
-        logger.debug(f'"bootstrap-vcpkg.sh: ":{install_run.stdout.decode('ascii')}')
+        logger.debug(f"'bootstrap-vcpkg.sh: {install_run.stdout.decode('ascii')}")
 
     int_command = "./vcpkg integrate install".split(" ")
     int_run = subprocess.run(int_command, cwd=VCPKG_LOCATION, capture_output=True)
     if DEBUG_MODE:
         print(int_run.stdout)
-        logger.debug(f'"vcpkg integrate install: ":{int_run.stdout.decode('ascii')}')
+        logger.debug(f"'vcpkg integrate install: {int_run.stdout.decode('ascii')}")
 
 
 def exec_explorer(directory):
@@ -81,7 +82,7 @@ def mt_vcpkg_blint_db_build(project_name):
     logger.debug(f"Running {project_name}")
     try:
         execs = add_project_vcpkg_db(project_name)
-    except Exception as e:
+    except OperationalError as e:
         logger.info(f"error encountered with {project_name}")
         logger.error(e)
         logger.error(traceback.format_exc())

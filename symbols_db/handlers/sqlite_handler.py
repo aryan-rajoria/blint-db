@@ -7,10 +7,10 @@ from pathlib import PurePath
 from symbols_db import BLINTDB_LOCATION, DEBUG_MODE, SQLITE_TIMEOUT
 
 
-def get_cursor():
-    connection = sqlite3.connect(BLINTDB_LOCATION, timeout=180.0)
-    c = connection.cursor()
-    return connection, c
+# def get_cursor():
+#     connection = sqlite3.connect(BLINTDB_LOCATION, timeout=180.0)
+#     c = connection.cursor()
+#     return connection, c
 
 
 def create_database():
@@ -22,8 +22,8 @@ def create_database():
                 """
                 CREATE TABLE IF NOT EXISTS Projects (
                     pid     INTEGER PRIMARY KEY AUTOINCREMENT,
-                    pname   VARCHAR(255) UNIQUE,
-                    purl    VARCHAR(255),
+                    pname   VARCHAR(255),
+                    purl    VARCHAR(255) UNIQUE,
                     cbom    BLOB
                 );
                 """
@@ -49,6 +49,7 @@ def create_database():
                 );
                 """
             )
+
             binary_exports_table = c.execute(
                 """
                 CREATE TABLE IF NOT EXISTS BinariesExports (
@@ -66,6 +67,7 @@ def create_database():
                 CREATE INDEX IF NOT EXISTS export_name_index ON Exports (infunc);
                 """
             )
+            
             pragma_sync = c.execute("PRAGMA synchronous = 'OFF';")
             pragma_jm = c.execute("PRAGMA journal_mode = 'WAL';")
             pragma_ts = c.execute("PRAGMA temp_store = 'MEMORY';")

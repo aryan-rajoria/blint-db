@@ -1,4 +1,5 @@
 import shutil
+from sqlite3 import OperationalError
 import traceback
 
 from symbols_db import WRAPDB_HASH, WRAPDB_LOCATION, WRAPDB_URL, logger
@@ -42,7 +43,7 @@ def mt_meson_blint_db_build(project_name):
     logger.debug(f"Running {project_name}")
     try:
         execs = add_project_meson_db(project_name)
-    except Exception as e:
+    except OperationalError as e:
         logger.info(f"error encountered with {project_name}")
         logger.error(e)
         logger.error(traceback.format_exc())

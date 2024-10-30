@@ -66,7 +66,7 @@ def arguments_parser():
     return parser.parse_args()
 
 
-def meson_add_blint_bom_process(blintsbom):
+def meson_add_blint_bom_process():
     projects_list = get_wrapdb_projects()
 
     # build the projects single threaded
@@ -79,7 +79,7 @@ def meson_add_blint_bom_process(blintsbom):
             print(f"Ran complete for {project_name} and we found {len(executables)}")
 
 
-def vcpkg_add_blint_bom_process(blintsbom):
+def vcpkg_add_blint_bom_process():
     projects_list = get_vcpkg_projects()
 
     with concurrent.futures.ProcessPoolExecutor(max_workers=1) as executor:
