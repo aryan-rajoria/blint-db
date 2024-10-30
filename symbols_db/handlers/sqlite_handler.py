@@ -30,7 +30,6 @@ def create_database():
                     pid     INTEGER,
                     bname   VARCHAR(500),
                     bbom    BLOB,
-                            
                     FOREIGN KEY (pid) REFERENCES Projects(pid)
                 );
                 """
@@ -61,7 +60,7 @@ def create_database():
                 CREATE INDEX IF NOT EXISTS export_name_index ON Exports (infunc);
                 """
             )
-            
+
             pragma_sync = c.execute("PRAGMA synchronous = 'OFF';")
             pragma_jm = c.execute("PRAGMA journal_mode = 'WAL';")
             pragma_ts = c.execute("PRAGMA temp_store = 'MEMORY';")

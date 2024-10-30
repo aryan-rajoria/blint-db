@@ -2,13 +2,13 @@ import argparse
 import concurrent
 import concurrent.futures
 import json
-import os
-from pathlib import Path
 
 from symbols_db.handlers.blint_handler import get_properties_internal
-from tests.scripts.match_internal_functions_withdb import (get_bid_using_fid,
-                                                           get_bname,
-                                                           get_export_id)
+from tests.scripts.match_internal_functions_withdb import (
+    get_bid_using_fid,
+    get_bname,
+    get_export_id,
+)
 
 
 def arguments_parser():
@@ -55,9 +55,9 @@ def main():
     if bom_file := args["bom"]:
         all_ifunc_object = {}
         if_strings = get_blint_internal_functions(bom_file)
-        if single := args["single"]:
+        if args["single"]:
             for i_func in if_strings:
-                get_bnames_ename(i_func)
+                bin_names = get_bnames_ename(i_func)
                 print_string = f"For func: {i_func} got binaries: {bin_names}"
                 all_ifunc_object[i_func] = bin_names
                 if bin_names:

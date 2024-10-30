@@ -2,8 +2,10 @@ import os
 from pathlib import Path
 
 from symbols_db import WRAPDB_LOCATION
-from symbols_db.projects_compiler.meson import (git_checkout_wrapdb_commit,
-                                                git_clone_wrapdb)
+from symbols_db.projects_compiler.meson import (
+    git_checkout_wrapdb_commit,
+    git_clone_wrapdb,
+)
 
 
 def get_wrapdb_projects():

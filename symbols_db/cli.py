@@ -1,12 +1,9 @@
 import argparse
 import concurrent
 
-from symbols_db.handlers.language_handlers.vcpkg_handler import \
-    get_vcpkg_projects
-from symbols_db.handlers.language_handlers.wrapdb_handler import \
-    get_wrapdb_projects
-from symbols_db.handlers.sqlite_handler import (clear_sqlite_database,
-                                                create_database)
+from symbols_db.handlers.language_handlers.vcpkg_handler import get_vcpkg_projects
+from symbols_db.handlers.language_handlers.wrapdb_handler import get_wrapdb_projects
+from symbols_db.handlers.sqlite_handler import clear_sqlite_database, create_database
 from symbols_db.projects_compiler.meson import mt_meson_blint_db_build
 from symbols_db.projects_compiler.vcpkg import mt_vcpkg_blint_db_build
 
@@ -60,7 +57,7 @@ def arguments_parser():
         dest="clean",
         default=False,
         action="store_true",
-        help="Resets the database before starting a new build"
+        help="Resets the database before starting a new build",
     )
 
     return parser.parse_args()
