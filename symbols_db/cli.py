@@ -1,9 +1,12 @@
 import argparse
 import concurrent
 
-from symbols_db.handlers.language_handlers.vcpkg_handler import get_vcpkg_projects
-from symbols_db.handlers.language_handlers.wrapdb_handler import get_wrapdb_projects
-from symbols_db.handlers.sqlite_handler import clear_sqlite_database, create_database
+from symbols_db.handlers.language_handlers.vcpkg_handler import \
+    get_vcpkg_projects
+from symbols_db.handlers.language_handlers.wrapdb_handler import \
+    get_wrapdb_projects
+from symbols_db.handlers.sqlite_handler import (clear_sqlite_database,
+                                                create_database)
 from symbols_db.projects_compiler.meson import mt_meson_blint_db_build
 from symbols_db.projects_compiler.vcpkg import mt_vcpkg_blint_db_build
 

@@ -1,11 +1,11 @@
 import os
-import subprocess
 import shutil
+import subprocess
 from pathlib import Path
 
-from symbols_db import CWD, WRAPDB_URL, WRAPDB_LOCATION, WRAPDB_HASH
+from symbols_db import CWD, WRAPDB_HASH, WRAPDB_LOCATION, WRAPDB_URL
+from symbols_db.handlers.git_handler import git_checkout_commit, git_clone
 from symbols_db.handlers.language_handlers import BaseHandler
-from symbols_db.handlers.git_handler import git_clone, git_checkout_commit
 from symbols_db.utils.utils import subprocess_run_debug
 
 

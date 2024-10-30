@@ -1,14 +1,21 @@
 import subprocess
 from pathlib import Path
 
-from symbols_db import (BOM_LOCATION, DEBUG_MODE, DELIMETER_BOM,
-                        WRAPDB_LOCATION)
+from symbols_db import BOM_LOCATION, DEBUG_MODE, DELIMETER_BOM, WRAPDB_LOCATION
 from symbols_db.utils.json import get_properties_internal
 
 
 def run_blint_on_file(file_path):
     # TODO: assume blint installed
-    blint_command = ["blint", "sbom", "--deep", "-o", f"{file_path}.json", "-i", file_path]
+    blint_command = [
+        "blint",
+        "sbom",
+        "--deep",
+        "-o",
+        f"{file_path}.json",
+        "-i",
+        file_path,
+    ]
     blint_output = subprocess.run(blint_command, cwd=WRAPDB_LOCATION)
 
     if DEBUG_MODE:
