@@ -7,12 +7,6 @@ from pathlib import PurePath
 from symbols_db import BLINTDB_LOCATION, DEBUG_MODE, SQLITE_TIMEOUT
 
 
-# def get_cursor():
-#     connection = sqlite3.connect(BLINTDB_LOCATION, timeout=180.0)
-#     c = connection.cursor()
-#     return connection, c
-
-
 def create_database():
     with closing(
         sqlite3.connect(BLINTDB_LOCATION, timeout=SQLITE_TIMEOUT)
