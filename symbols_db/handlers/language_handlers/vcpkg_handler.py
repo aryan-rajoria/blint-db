@@ -133,7 +133,7 @@ def exec_explorer(directory):
                 )
                 if b"ELF" in result.stdout:
                     executables.append(file_path)
-                if b"archive" in result.stdout:
+                if b"current ar archive" in result.stdout:
                     executables.append(file_path)
             except FileNotFoundError:
                 print(
