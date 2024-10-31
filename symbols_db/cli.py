@@ -1,5 +1,5 @@
 import argparse
-import concurrent
+from concurrent import futures
 
 from symbols_db.handlers.language_handlers.vcpkg_handler import \
     get_vcpkg_projects
@@ -72,7 +72,7 @@ def meson_add_blint_bom_process():
     # build the projects single threaded
     # st_meson_blint_db_build(projects_list)
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=4) as executor:
+    with futures.ProcessPoolExecutor(max_workers=4) as executor:
         for project_name, executables in zip(
             projects_list, executor.map(mt_meson_blint_db_build, projects_list)
         ):
@@ -82,7 +82,7 @@ def meson_add_blint_bom_process():
 def vcpkg_add_blint_bom_process():
     projects_list = get_vcpkg_projects()
 
-    with concurrent.futures.ProcessPoolExecutor(max_workers=1) as executor:
+    with futures.ProcessPoolExecutor(max_workers=1) as executor:
         for project_name, executables in zip(
             projects_list, executor.map(mt_vcpkg_blint_db_build, projects_list)
         ):
@@ -98,10 +98,10 @@ def main():
         create_database()
 
     if args["meson"]:
-        meson_add_blint_bom_process(args["blintsbom"])
+        meson_add_blint_bom_process()
 
     if args["vcpkg"]:
-        vcpkg_add_blint_bom_process(args["blintsbom"])
+        vcpkg_add_blint_bom_process()
 
 
 if __name__ == "__main__":

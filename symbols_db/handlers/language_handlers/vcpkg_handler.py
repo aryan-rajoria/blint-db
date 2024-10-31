@@ -4,8 +4,7 @@ import subprocess
 from symbols_db import VCPKG_HASH, VCPKG_LOCATION, VCPKG_URL
 from symbols_db.handlers.git_handler import git_checkout_commit, git_clone
 from symbols_db.handlers.language_handlers import BaseHandler
-from symbols_db.projects_compiler.vcpkg import (exec_explorer,
-                                                git_checkout_vcpkg_commit,
+from symbols_db.projects_compiler.vcpkg import (git_checkout_vcpkg_commit,
                                                 git_clone_vcpkg,
                                                 run_vcpkg_install_command)
 from symbols_db.utils.utils import subprocess_run_debug
@@ -76,6 +75,36 @@ def archive_explorer(directory):
                     "Error: 'file' command not found. Make sure it's installed and in your PATH."
                 )
                 return []
+    return executables
+
+
+def exec_explorer(directory):
+    """
+    Walks through a directory and identifies executable files using the `file` command.
+
+    Args:
+      directory: The directory to search.
+
+    Returns:
+      A list of executable file paths.
+    """
+    executables = []
+    for root, _, files in os.walk(directory):
+        for file in files:
+            file_path = os.path.join(root, file)
+            try:
+                result = subprocess.run(["file", file_path], capture_output=True)
+                if b"ELF" in result.stdout:
+                    executables.append(file_path)
+                if b"archive" in result.stdout:
+                    executables.append(file_path)
+            except FileNotFoundError:
+                print(
+                    "Error: 'file' command not found. Make sure it's installed and in your PATH."
+                )
+                return (
+                    []
+                )  # TODO: Do you really want to return early, or should you be going to the next file in the iteration with continue?
     return executables
 
 
