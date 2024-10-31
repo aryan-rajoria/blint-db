@@ -1,5 +1,6 @@
 import logging
 import os
+import sqlite3
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -26,3 +27,6 @@ BLINTDB_LOCATION = "blint.db"
 CWD = Path(os.getcwd())
 
 SQLITE_TIMEOUT = 20.0
+
+# COMMON_CONNECTION = None
+COMMON_CONNECTION = sqlite3.connect(":memory:")
