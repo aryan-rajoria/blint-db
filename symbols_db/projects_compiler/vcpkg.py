@@ -86,7 +86,7 @@ def mt_vcpkg_blint_db_build(project_name):
     logger.debug(f"Running {project_name}")
     try:
         execs = add_project_vcpkg_db(project_name)
-        logger.info(f"Completed: {project_name}")
+        logger.info(f"Completed: {project_name} with execs:{len(execs)}")
     except OperationalError as e:
         logger.info(f"error encountered with {project_name}")
         logger.error(e)
