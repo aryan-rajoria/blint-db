@@ -4,9 +4,6 @@ import subprocess
 from symbols_db import VCPKG_HASH, VCPKG_LOCATION, VCPKG_URL
 from symbols_db.handlers.git_handler import git_checkout_commit, git_clone
 from symbols_db.handlers.language_handlers import BaseHandler
-from symbols_db.projects_compiler.vcpkg import (git_checkout_vcpkg_commit,
-                                                git_clone_vcpkg,
-                                                run_vcpkg_install_command)
 from symbols_db.utils.utils import subprocess_run_debug
 
 
@@ -35,6 +32,28 @@ class VcpkgHandler(BaseHandler):
         ports_path = VCPKG_LOCATION / "ports"
         return os.listdir(ports_path)
 
+def git_clone_vcpkg():
+    git_clone(VCPKG_URL, VCPKG_LOCATION)
+
+
+def git_checkout_vcpkg_commit():
+    git_checkout_commit(VCPKG_LOCATION, VCPKG_HASH)
+
+def run_vcpkg_install_command():
+    # Linux command
+    install_command = ["./bootstrap-vcpkg.sh"]
+    install_run = subprocess.run(
+        install_command, cwd=VCPKG_LOCATION, capture_output=True
+    )
+    if DEBUG_MODE:
+        print(install_run.stdout)
+        logger.debug(f"'bootstrap-vcpkg.sh: {install_run.stdout.decode('ascii')}")
+
+    int_command = "./vcpkg integrate install".split(" ")
+    int_run = subprocess.run(int_command, cwd=VCPKG_LOCATION, capture_output=True)
+    if DEBUG_MODE:
+        print(int_run.stdout)
+        logger.debug(f"'vcpkg integrate install: {int_run.stdout.decode('ascii')}")
 
 def get_vcpkg_projects():
     git_clone_vcpkg()
@@ -49,6 +68,11 @@ def vcpkg_build(project_name):
     inst_cmd = f"./vcpkg install {project_name}".split(" ")
     inst_run = subprocess.run(inst_cmd, cwd=VCPKG_LOCATION, capture_output=True)
     subprocess_run_debug(inst_run, project_name)
+
+def find_vcpkg_executables(project_name):
+    project_path = f"{project_name}_x64-linux"
+    target_directory = VCPKG_LOCATION / "packages" / project_path
+    return exec_explorer(target_directory)
 
 
 def archive_explorer(directory):
@@ -106,9 +130,3 @@ def exec_explorer(directory):
                     []
                 )  # TODO: Do you really want to return early, or should you be going to the next file in the iteration with continue?
     return executables
-
-
-def find_vcpkg_executables(project_name):
-    project_path = f"{project_name}_x64-linux"
-    target_directory = VCPKG_LOCATION / "packages" / project_path
-    return exec_explorer(target_directory)
