@@ -1,6 +1,7 @@
 import argparse
 from concurrent import futures
 
+from symbols_db import BLINTDB_LOCATION, COMMON_CONNECTION
 from symbols_db.handlers.language_handlers.vcpkg_handler import \
     get_vcpkg_projects
 from symbols_db.handlers.language_handlers.wrapdb_handler import \
@@ -81,12 +82,15 @@ def meson_add_blint_bom_process():
 
 def vcpkg_add_blint_bom_process():
     projects_list = get_vcpkg_projects()
+    for project_name in projects_list:
+        executables = mt_vcpkg_blint_db_build(project_name)
+        print(f"Ran complete for {project_name} and we found {len(executables)}")
 
-    with futures.ProcessPoolExecutor(max_workers=1) as executor:
-        for project_name, executables in zip(
-            projects_list, executor.map(mt_vcpkg_blint_db_build, projects_list)
-        ):
-            print(f"Ran complete for {project_name} and we found {len(executables)}")
+    # with futures.ProcessPoolExecutor(max_workers=1) as executor:
+    #     for project_name, executables in zip(
+    #         projects_list, executor.map(mt_vcpkg_blint_db_build, projects_list)
+    #     ):
+    #         print(f"Ran complete for {project_name} and we found {len(executables)}")
 
 
 def main():
@@ -102,6 +106,9 @@ def main():
 
     if args["vcpkg"]:
         vcpkg_add_blint_bom_process()
+
+    if COMMON_CONNECTION:
+        COMMON_CONNECTION.execute(f"vacuum main into '{BLINTDB_LOCATION}'")
 
 
 if __name__ == "__main__":
